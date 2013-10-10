@@ -2,7 +2,7 @@
 # events.
 #
 # @example Manually deferring model changes.
-#   class MySafeEntitiesObserver < Sketchup::EntitiesObserver
+#   class MySaferEntitiesObserver < Sketchup::EntitiesObserver
 #  
 #     include SaferObserverEvents
 #  
@@ -24,15 +24,15 @@
 #  
 #   end # class
 #  
-#   observer = MySafeEntitiesObserver.new
+#   observer = MySaferEntitiesObserver.new
 #   Sketchup.active_model.entities.add_observer(observer)
 #
 # @example Automatic Wrapping
-#   class MySafeEntitiesObserver < Sketchup::EntitiesObserver
+#   class MySaferEntitiesObserver < Sketchup::EntitiesObserver
 #   
 #     include SaferObserverEvents
 #   
-#     def safe_onElementAdded(entities, entity)
+#     def safer_onElementAdded(entities, entity)
 #       # Entity might already be invalid. Make sure to check for that.
 #       return if entity.deleted?
 #       if entity.is_a?(Sketchup::Face)
@@ -44,7 +44,7 @@
 #   
 #   end # class
 #   
-#   observer = MySafeEntitiesObserver.new
+#   observer = MySaferEntitiesObserver.new
 #   Sketchup.active_model.entities.add_observer(observer)
 module SaferObserverEvents
 
