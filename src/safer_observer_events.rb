@@ -4,7 +4,7 @@
 # @example Manually deferring model changes.
 #   class MySafeEntitiesObserver < Sketchup::EntitiesObserver
 #  
-#     include SafeObserverEvents
+#     include SaferObserverEvents
 #  
 #     def onElementAdded(entities, entity)
 #       # Cache some data.
@@ -30,7 +30,7 @@
 # @example Automatic Wrapping
 #   class MySafeEntitiesObserver < Sketchup::EntitiesObserver
 #   
-#     include SafeObserverEvents
+#     include SaferObserverEvents
 #   
 #     def safe_onElementAdded(entities, entity)
 #       # Entity might already be invalid. Make sure to check for that.
@@ -46,7 +46,7 @@
 #   
 #   observer = MySafeEntitiesObserver.new
 #   Sketchup.active_model.entities.add_observer(observer)
-module SafeObserverEvents
+module SaferObserverEvents
 
   # Safely defer the execution of the block and wrap everything in an operation.
   #
@@ -96,7 +96,7 @@ module SafeObserverEvents
     # Forward observer events to safe wrapper. This is needed in case the
     # observer didn't subclass an Observer prototype.
     def method_missing(symbol, *args, &block)
-      safe_symbol = "safe_#{symbol}"
+      safe_symbol = "safer_#{symbol}"
       if respond_to?(safe_symbol)
         model = find_model_argument(*args)
         defer_model_change(model) {
@@ -110,7 +110,7 @@ module SafeObserverEvents
     # When the observer has subclasses a template observer we must inject
     # forwarding methods that will ensure the safe wrappers are called.
     target_module.instance_methods.grep(/on[A-Z]/).each { |symbol|
-      safe_symbol = "safe_#{symbol}"
+      safe_symbol = "safer_#{symbol}"
       target_module.class_eval {
         define_method(symbol) { |*args|
           # Call original method just in case a sub-class implements a non-safe
@@ -136,7 +136,7 @@ module SafeObserverEvents
         # First check if the object responds to that method.
         unless safe_observer_event_respond_to_backup?(*args)
           # If it doesn't then check if there is a safe_ version of the method.
-          args[0] = "safe_#{args[0]}"
+          args[0] = "safer_#{args[0]}"
           return safe_observer_event_respond_to_backup?(*args)
         end
         true
