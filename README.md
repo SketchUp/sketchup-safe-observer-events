@@ -1,5 +1,5 @@
-SketchUp Safe Observer Events
-=============================
+Safer SketchUp Observer Events
+==============================
 
 Mix-in module that implements wrappers for executing model changes from observer events safely*.
 
