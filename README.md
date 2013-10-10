@@ -1,7 +1,9 @@
 SketchUp Safe Observer Events
 =============================
 
-Mix-in module that implements wrappers for executing model changes from observer events safely.
+Mix-in module that implements wrappers for executing model changes from observer events safely*.
+
+* **NOTE** It's not 100% safe. There is always possible to break stuff will observers. See example at the bottom of this readme for example.
 
 Usage
 -----
@@ -62,4 +64,25 @@ class MySafeEntitiesObserver < Sketchup::EntitiesObserver
   end
 
 end # class
+```
+
+Beware of Gremlins!
+-------------------
+
+It is still possible to break stuff, for instance if anyone is doing stuff like this in a model where we have attached our first example:
+```ruby
+# Example of bad program design, do UI interaction before starting to work on
+# the model.
+model = Sketchup.active_model
+entities = model.active_entities
+face = entities.add_face(
+  Geom::Point3d.new(0,0,0),
+  Geom::Point3d.new(9,0,0),
+  Geom::Point3d.new(9,9,0),
+  Geom::Point3d.new(0,9,0)
+)
+face.material = 'red'
+UI.messagebox('Look over there!')
+# (!) SafeObserverEvents will kick in here!
+face.material = 'green' # This is raise error before the face is gone.
 ```
