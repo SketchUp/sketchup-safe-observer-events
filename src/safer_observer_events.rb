@@ -48,6 +48,8 @@
 #   Sketchup.active_model.entities.add_observer(observer)
 module SaferObserverEvents
 
+  VERSION = '1.0.1'.freeze
+
   # Safely defer the execution of the block and wrap everything in an operation.
   #
   # @param [Sketchup::Model, #model]
@@ -63,10 +65,16 @@ module SaferObserverEvents
     unless model.is_a?(Sketchup::Model) && model.valid?
       raise ArgumentError, "Need a valid model (#{model.inspect})"
     end
+    executed = false
     timer_id = UI.start_timer(0, false) {
       # Opening a modal window will cause this non-repeating timer to repeat.
       # to work around this we explicitly stop it, just to be safe.
-      UI.stop_timer(timer_id)
+      #UI.stop_timer(timer_id)
+      # (!) Calling UI.stop_timer appear to make SketchUp prone to crashing so
+      #     we will instead keep this variable instead to prevent triggering
+      #     the event multiple times.
+      break if executed
+      executed = true
       # Ensure that the operation is transparent so the Undo stack isn't
       # cluttered.
       #
