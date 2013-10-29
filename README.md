@@ -4,6 +4,7 @@ Safer SketchUp Observer Events
 Mix-in module that implements wrappers for executing model changes from observer events safely*.
 
 * **NOTE** It's not 100% safe. There is always possible to break stuff will observers. See example at the bottom of this readme for example.
+* **ATTENTION!** Never, ever, ever, use this wrapper methods for events that doesn't modify the model. If you do you will trigger another bug where commiting an empty transparent operation will mess up the Undo stack and possibly crash SketchUp!
 
 Usage
 -----
