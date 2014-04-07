@@ -9,13 +9,13 @@ Mix-in module that implements wrappers for executing model changes from observer
 Usage
 -----
 
-1. Include the `SaferObserverEvents` mix-in module.
+1. Include the `SaferObserverEvents` mix-in module. (Rememeber to wrap it into your own namespace)
 2. Append `safer_` in front of the observer events.
 3. Done!
 
 Now the event will be deferred until the current operation has finished and it is safe to perform model changes.
 
-As an added bonus, everything will be wrapped into an transparent operation.
+As an added bonus, everything will be wrapped into an transparent operation so you don't need to wrap the code in `model.start_operation` yourself.
 
 ```ruby
 class MySaferEntitiesObserver < Sketchup::EntitiesObserver
