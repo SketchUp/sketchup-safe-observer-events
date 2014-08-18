@@ -48,7 +48,7 @@
 #   Sketchup.active_model.entities.add_observer(observer)
 module SaferObserverEvents
 
-  VERSION = '1.0.1'.freeze
+  VERSION = '1.0.2'.freeze
 
   # Safely defer the execution of the block and wrap everything in an operation.
   #
@@ -115,7 +115,7 @@ module SaferObserverEvents
       end
     end
 
-    # When the observer has subclasses a template observer we must inject
+    # When the observer sub-classes a template observer we must inject
     # forwarding methods that will ensure the safe wrappers are called.
     target_module.instance_methods.grep(/on[A-Z]/).each { |symbol|
       safe_symbol = "safer_#{symbol}"
@@ -138,6 +138,10 @@ module SaferObserverEvents
     # SketchUp might query the observer instance before calling it. We must
     # intercept this and check if there is a safe method to handle the
     # observer callback.
+    # Due to a bug in SketchUp overriding the `respond_to?` method might cause
+    # a crash under OSX. This was only needed for observers that didn't
+    # sub-class a template observer.
+=begin
     unless method_defined?(:safe_observer_event_respond_to_backup?)
       alias :safe_observer_event_respond_to_backup? :respond_to?
       def respond_to?(*args)
@@ -150,6 +154,7 @@ module SaferObserverEvents
         true
       end
     end
+=end
 
   end
 
