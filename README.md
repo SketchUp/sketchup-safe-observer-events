@@ -85,5 +85,5 @@ face = entities.add_face(
 face.material = 'red'
 UI.messagebox('Look over there!')
 # (!) SaferObserverEvents will kick in here!
-face.material = 'green' # This is raise error before the face is gone.
+face.material = 'green' # Face will be erased at this point!
 ```
