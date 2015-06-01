@@ -168,7 +168,7 @@ module SaferObserverEvents
   def find_model_argument(*args)
     # First a valid model object is searched for.
     model = args.find { |arg|
-      arg.is_a?(Sketchup::Model) && model.valid?
+      arg.is_a?(Sketchup::Model) && arg.valid?
     }
     # Then we look for objects that might return a valid model object.
     unless model
