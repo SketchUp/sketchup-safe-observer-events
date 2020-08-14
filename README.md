@@ -1,7 +1,12 @@
 Safer SketchUp Observer Events (For SketchUp 2015 or older)
 ===========================================================
 
+Obsolete!
+---------
+
 **Note** This pattern is not needed for SketchUp 2016 and older as the observer events will no longer trigger in the middle of an active operation.
+
+---
 
 Mix-in module that implements wrappers for executing model changes from observer events safely*.
 
